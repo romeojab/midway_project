@@ -79,6 +79,23 @@ GROUP BY	sex
 ORDER BY accidents DESC
 ; -- Males are still on top for the number of accidents
 
+-- What time of the day have the most accidents
+SELECT	time
+        , COUNT(*) AS accidents
+FROM midway_project.bike_df
+GROUP BY time
+ORDER BY accidents DESC
+; -- It seems that the most accidents occur in the evenings between 20:00 and 21:00
+
+-- Now lets see if this is still the case if we look at time and years
+SELECT	time
+		, DATE_FORMAT(date,'%Y') AS year_date
+        , COUNT(*) AS accidents
+FROM midway_project.bike_df
+GROUP BY time, year_date
+ORDER BY accidents DESC
+; -- Interestingly we see that both 21:30 in 2020 and 11:30 in 2021 have the most accidents, closely followed by 21:00 in 2020 and 14:30 in 2020
+
 -- Now lets see the distribution by district
 SELECT	district
         , COUNT(*) AS accidents
@@ -107,3 +124,23 @@ GROUP BY	district
 			, year_date
 ORDER BY accidents DESC
 ; -- The city center is still on top for the most accidents in 2022
+
+-- query to import to python
+SELECT	district
+        , accident_type
+        , weather_state
+        , vehicle_type
+        , age_range
+        , sex
+        , injury_type
+        , COUNT(*) AS accidents
+FROM midway_project.bike_df
+GROUP BY	district
+			, accident_type
+			, weather_state
+			, vehicle_type
+			, age_range
+			, sex
+			, injury_type
+ORDER BY accidents DESC
+;
